@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Automated Color Sorting Conveyor | MEC 354</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07142b;--bg2:#0d1f3d;--card:#0f2447;--line:#1c3868;--cy:#22d3ee;--tx:#eaf2ff;--mu:#9bb0d0;--r:#ef4444;--g:#22c55e;--b:#3b82f6;--y:#facc15;--w:#cbd5e1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Cairo,system-ui,'Segoe UI',Arial,sans-serif;line-height:1.7}
+html[lang=ar] .en,html[lang=en] .ar{display:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(7,20,43,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:14px;height:54px;overflow-x:auto}
+nav b{color:var(--cy);white-space:nowrap}
+nav a{color:var(--mu);text-decoration:none;font-size:14px;white-space:nowrap}
+nav a:hover{color:var(--cy)}
+.sp{flex:1}
+button,.btn{font:inherit;cursor:pointer;border:1px solid var(--cy);background:transparent;color:var(--cy);border-radius:999px;padding:6px 16px;text-decoration:none;font-weight:600}
+.btn.fill,button.fill{background:var(--cy);color:#04243a}
+.hero{padding:64px 0 40px;background:radial-gradient(900px 420px at 80% 0,#133a6b55,transparent),linear-gradient(var(--bg),var(--bg2))}
+.tag{color:var(--cy);letter-spacing:.18em;font-size:13px;font-weight:600}
+h1{font-size:clamp(38px,8vw,72px);line-height:1.05;margin:10px 0 14px;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--r),var(--y),var(--g),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:640px;color:var(--mu);font-size:18px}
+.dots{display:flex;gap:10px;margin:22px 0}
+.dots i{width:26px;height:26px;border-radius:50%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:26px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat b{display:block;font-size:28px;color:var(--cy)}
+.stat span{color:var(--mu);font-size:14px}
+section{padding:46px 0}
+h2{font-size:30px;margin:0 0 6px}
+h2::before{content:"";display:inline-block;width:6px;height:26px;background:var(--cy);border-radius:3px;margin-inline-end:10px;vertical-align:-3px}
+.sub{color:var(--mu);margin:0 0 22px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--cy);color:#04243a;font-weight:800;margin-bottom:8px}
+.step b{display:block}.step span{color:var(--mu);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin:0 0 4px;font-size:17px;color:var(--cy)}
+.card p{margin:0;color:var(--mu);font-size:14px}
+.obj{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.obj li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px 12px 44px;position:relative}
+html[dir=rtl] .obj li{padding:12px 44px 12px 16px}
+.obj li::before{content:"✓";position:absolute;inset-inline-start:14px;top:10px;color:var(--g);font-weight:800}
+.video{background:#000;border:1px solid var(--line);border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:grid;place-items:center;text-align:center}
+.video video{width:100%;height:100%;display:block;background:#000}
+.ph{color:var(--mu);padding:20px}
+.ph .pl{width:84px;height:84px;border-radius:50%;border:3px solid var(--cy);display:grid;place-items:center;margin:0 auto 12px;font-size:34px;color:var(--cy)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:start;font-size:14px}
+th{color:var(--cy)}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.team div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.qrbox{display:flex;flex-wrap:wrap;gap:26px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+#qr{background:#fff;padding:12px;border-radius:14px;line-height:0;min-width:244px;min-height:244px}
+#qr img{display:block!important;width:220px;height:220px}#qr canvas{display:none!important}.video iframe{display:block}.poster{display:grid;place-items:center;width:100%;height:100%;background:#000 url(https://i.ytimg.com/vi/U7IXsHqCuUI/hqdefault.jpg) center/cover no-repeat;text-decoration:none}.poster .pl{width:84px;height:84px;border-radius:50%;background:rgba(7,20,43,.8);border:3px solid var(--cy);display:grid;place-items:center;font-size:34px;color:var(--cy)}
+.qrbox input{width:100%;max-width:420px;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;direction:ltr}
+footer{padding:30px 0 40px;border-top:1px solid var(--line);color:var(--mu);text-align:center;font-size:14px}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+<b>MEC 354</b>
+<a href="#how"><span class="en">How it works</span><span class="ar">آلية العمل</span></a>
+<a href="#goals"><span class="en">Objectives</span><span class="ar">الأهداف</span></a>
+<a href="#parts"><span class="en">Components</span><span class="ar">المكونات</span></a>
+<a href="#video"><span class="en">Video</span><span class="ar">الفيديو</span></a>
+<a href="#team"><span class="en">Team</span><span class="ar">الفريق</span></a>
+<span class="sp"></span>
+<button id="lang" type="button">العربية</button>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+<div class="tag">MEC 354 · MECHATRONICS ENGINEERING · 2026</div>
+<h1>Automated<br><em>Color Sorting</em><br>Conveyor</h1>
+<p class="lead">
+<span class="en">A smart conveyor that detects objects, reads their color with a TCS3200 sensor, and diverts each one into its own bin automatically, built around the ATmega32A microcontroller.</span>
+<span class="ar">سير ناقل ذكي يكتشف الأجسام ويقرأ لونها بحساس TCS3200 ثم يوجّه كل جسم تلقائيًا إلى الصندوق الخاص بلونه، ويعمل بالمتحكم ATmega32A.</span></p>
+<div class="dots"><i style="background:var(--r)"></i><i style="background:var(--g)"></i><i style="background:var(--b)"></i><i style="background:var(--y)"></i><i style="background:var(--w)"></i></div>
+<div class="stats">
+<div class="stat"><b>5</b><span class="en">sorting bins</span><span class="ar">صناديق فرز</span></div>
+<div class="stat"><b>6</b><span class="en">IR sensors</span><span class="ar">حساسات IR</span></div>
+<div class="stat"><b>2</b><span class="en">servo gates</span><span class="ar">بوابات سيرفو</span></div>
+<div class="stat"><b>5 s</b><span class="en">fault watchdog</span><span class="ar">مؤقت الأعطال</span></div>
+</div>
+</div></header>
+
+<section id="how"><div class="wrap">
+<h2><span class="en">How it works</span><span class="ar">كيف يعمل؟</span></h2>
+<p class="sub"><span class="en">One object at a time, from START to the final count.</span><span class="ar">جسم واحد في كل مرة، من الضغط على START حتى العدّ النهائي.</span></p>
+<div class="steps">
+<div class="step"><b>START</b><span class="en">The operator presses START and the belt runs.</span><span class="ar">يضغط المشغّل START فيبدأ السير بالدوران.</span></div>
+<div class="step"><b>Entry IR</b><span class="en">An object arrives, the belt stops at once.</span><span class="ar">يصل الجسم فيتوقف السير فورًا.</span></div>
+<div class="step"><b>TCS3200</b><span class="en">The sensor reads the color; two identical readings must agree.</span><span class="ar">يقرأ الحساس اللون ويجب أن تتطابق قراءتان متتاليتان.</span></div>
+<div class="step"><b>Servo gate</b><span class="en">The matching gate opens and the belt resumes.</span><span class="ar">تفتح البوابة المناسبة ويستأنف السير.</span></div>
+<div class="step"><b>Bin IR</b><span class="en">The object is counted and saved in EEPROM.</span><span class="ar">يُحتسب الجسم ويُحفظ العدد في الـEEPROM.</span></div>
+</div>
+<p class="sub" style="margin-top:18px"><span class="en">Sorting targets: Red, Green, Blue, Yellow. Anything else (such as white) goes to the Unknown bin. Counts stay saved even after a power cut.</span><span class="ar">ألوان الفرز: أحمر، أخضر، أزرق، أصفر. أي لون آخر (مثل الأبيض) يذهب إلى صندوق Unknown. تبقى الأعداد محفوظة حتى بعد انقطاع الكهرباء.</span></p>
+</div></section>
+
+<section id="goals"><div class="wrap">
+<h2><span class="en">Project objectives</span><span class="ar">أهداف المشروع</span></h2>
+<p class="sub"><span class="en">What the machine had to achieve.</span><span class="ar">ما الذي صُمّمت الآلة لتحقيقه.</span></p>
+<ul class="obj">
+<li><span class="en">Detect an object on the belt and stop it in front of the color sensor.</span><span class="ar">اكتشاف الجسم على السير وإيقافه أمام حساس اللون.</span></li>
+<li><span class="en">Identify red, green, blue or yellow, and treat anything else as unknown.</span><span class="ar">تحديد الأحمر أو الأخضر أو الأزرق أو الأصفر، واعتبار أي لون آخر غير معروف.</span></li>
+<li><span class="en">Move the correct servo gate to divert the object into its bin.</span><span class="ar">تحريك بوابة السيرفو الصحيحة لتوجيه الجسم إلى صندوقه.</span></li>
+<li><span class="en">Confirm the object reached its bin and keep a permanent count per color.</span><span class="ar">التأكد من وصول الجسم إلى صندوقه وحفظ عدّاد دائم لكل لون.</span></li>
+<li><span class="en">Show counts, last color and status on a 20×4 LCD.</span><span class="ar">عرض الأعداد وآخر لون والحالة على شاشة LCD 20×4.</span></li>
+<li><span class="en">Protect the machine and the user: START/STOP/EMERGENCY, fault alarm and temperature check.</span><span class="ar">حماية الآلة والمستخدم: أزرار START/STOP/EMERGENCY وإنذار الأعطال ومراقبة الحرارة.</span></li>
+</ul>
+</div></section>
+
+<section id="parts"><div class="wrap">
+<h2><span class="en">Main components</span><span class="ar">المكونات الرئيسية</span></h2>
+<p class="sub"><span class="en">Mechanics, electronics and software working together.</span><span class="ar">الميكانيكا والإلكترونيات والبرمجة تعمل معًا.</span></p>
+<div class="grid">
+<div class="card"><h3>ATmega32A</h3><p><span class="en">The brain: 8 MHz crystal, timers, ADC, I2C and EEPROM.</span><span class="ar">العقل المدبّر: كريستالة 8 ميجاهرتز، مؤقتات، ADC، I2C وEEPROM.</span></p></div>
+<div class="card"><h3>TCS3200</h3><p><span class="en">Color sensor that outputs a frequency for each color filter.</span><span class="ar">حساس لون يعطي تردد لكل فلتر لوني.</span></p></div>
+<div class="card"><h3>TCRT5000 × 6</h3><p><span class="en">IR sensors: one at the entry and one at every bin.</span><span class="ar">حساسات IR: واحد عند المدخل وواحد عند كل صندوق.</span></p></div>
+<div class="card"><h3>L293D + DC motor</h3><p><span class="en">Drives the belt with PWM speed control from a 12 V supply.</span><span class="ar">يشغّل السير بتحكم PWM في السرعة من مصدر 12 فولت.</span></p></div>
+<div class="card"><h3>2 × SG90 servo</h3><p><span class="en">Sorting gates: servo 1 red/green, servo 2 blue/yellow.</span><span class="ar">بوابات الفرز: سيرفو 1 أحمر/أخضر، سيرفو 2 أزرق/أصفر.</span></p></div>
+<div class="card"><h3>LCD 20×4 (I2C)</h3><p><span class="en">Live counts, last color, temperature and status using only 2 pins.</span><span class="ar">يعرض الأعداد وآخر لون والحرارة والحالة باستخدام طرفين فقط.</span></p></div>
+<div class="card"><h3>LM35 sensor</h3><p><span class="en">Temperature monitoring with an over-temperature FAULT at 35 °C.</span><span class="ar">مراقبة الحرارة مع إنذار عطل عند 35 °م.</span></p></div>
+<div class="card"><h3>LM2596 + 12 V</h3><p><span class="en">Buck converter gives a stable 5.0 V rail, with one common ground.</span><span class="ar">محوّل Buck يعطي 5.0 فولت مستقرة مع أرضي مشترك واحد.</span></p></div>
+<div class="card"><h3>Lamps &amp; buzzer</h3><p><span class="en">Green/red status lamps and an alarm buzzer.</span><span class="ar">لمبات خضراء/حمراء للحالة وجرس إنذار.</span></p></div>
+</div>
+
+<h2 style="margin-top:40px"><span class="en">Safety features</span><span class="ar">ميزات الأمان</span></h2>
+<div class="grid" style="margin-top:14px">
+<div class="card"><h3><span class="en">Normally-closed buttons</span><span class="ar">أزرار NC</span></h3><p><span class="en">A broken wire counts as a press, so the machine stops.</span><span class="ar">قطع السلك يُعتبر ضغطة فتتوقف الآلة.</span></p></div>
+<div class="card"><h3><span class="en">5-second FAULT timer</span><span class="ar">مؤقت عطل 5 ثوانٍ</span></h3><p><span class="en">Late object stops the belt; red lamp and buzzer blink.</span><span class="ar">تأخر الجسم يوقف السير ويومض الجرس واللمبة الحمراء.</span></p></div>
+<div class="card"><h3><span class="en">Emergency override</span><span class="ar">إيقاف الطوارئ</span></h3><p><span class="en">Checked first in every loop and overrides every state.</span><span class="ar">يُفحص أولًا في كل دورة ويتغلب على أي حالة.</span></p></div>
+</div>
+</div></section>
+
+<section id="stages"><div class="wrap">
+<h2><span class="en">Project stages</span><span class="ar">مراحل المشروع</span></h2>
+<p class="sub"><span class="en">Each stage was proven before the next one began.</span><span class="ar">كل مرحلة تم اختبارها قبل الانتقال للتالية.</span></p>
+<div class="scroll"><table>
+<tbody><tr><th>#</th><th><span class="en">Stage</span><span class="ar">المرحلة</span></th><th><span class="en">Tool</span><span class="ar">الأداة</span></th><th><span class="en">Result</span><span class="ar">النتيجة</span></th></tr>
+<tr><td>1</td><td><span class="en">Simulation</span><span class="ar">المحاكاة</span></td><td>Proteus</td><td><span class="en">Circuit and logic verified</span><span class="ar">التحقق من الدائرة والمنطق</span></td></tr>
+<tr><td>2</td><td><span class="en">3D design</span><span class="ar">التصميم ثلاثي الأبعاد</span></td><td>SolidWorks</td><td><span class="en">Full machine model</span><span class="ar">نموذج كامل للآلة</span></td></tr>
+<tr><td>3</td><td><span class="en">Breadboard</span><span class="ar">البريدبورد</span></td><td>USBasp</td><td><span class="en">Built and tuned on real parts</span><span class="ar">بناء وضبط على قطع حقيقية</span></td></tr>
+<tr><td>4</td><td>PCB</td><td>Proteus / Ares</td><td><span class="en">Board with labeled headers</span><span class="ar">لوحة بموصلات معنونة</span></td></tr>
+<tr><td>5</td><td><span class="en">Implementation</span><span class="ar">التنفيذ</span></td><td><span class="en">Final assembly</span><span class="ar">التجميع النهائي</span></td><td><span class="en">Assembled, tested, calibrated</span><span class="ar">تجميع واختبار ومعايرة</span></td></tr>
+</tbody></table></div>
+</div></section>
+
+<section id="video"><div class="wrap">
+<h2><span class="en">Demo video</span><span class="ar">الفيديو التوضيحي</span></h2>
+<p class="sub"><span class="en">See the machine running and how to operate it.</span><span class="ar">شاهد الآلة أثناء العمل وطريقة تشغيلها.</span></p>
+<div class="video" id="vbox"><a class="poster" href="https://youtu.be/U7IXsHqCuUI" target="_blank" rel="noopener" aria-label="Play demo video"><span class="pl">▶</span></a></div>
+<p style="margin-top:12px"><a class="btn" href="https://youtu.be/U7IXsHqCuUI" target="_blank" rel="noopener"><span class="en">Watch on YouTube</span><span class="ar">شاهد على YouTube</span></a></p>
+</div></section>
+
+<section id="team"><div class="wrap">
+<h2><span class="en">Team &amp; supervision</span><span class="ar">الفريق والإشراف</span></h2>
+<p class="sub"><span class="en">Supervised by Dr. Mohamed Elhossainy · Teaching assistants: Eng. Abdulrahman Khedr, Eng. Youssef Mohamed Fahmy</span><span class="ar">بإشراف د. محمد الحسيني · المعيدان: م. عبدالرحمن خضر، م. يوسف محمد فهمي</span></p>
+<div class="team">
+<div>Khaled Rafek</div><div>Yehia Abdullah</div><div>Shreif Ahmed</div><div>Mohamed Talaat</div><div>Ahmed Ibrahim</div>
+<div>Yousef Sameh</div><div>Kholoud Abdallah</div><div>Aya Abd Elmonem</div><div>Haneen Maher</div><div>Rahma Hossam</div>
+</div>
+</div></section>
+
+<section id="qr-sec"><div class="wrap">
+<h2><span class="en">Share this page</span><span class="ar">شارك هذه الصفحة</span></h2>
+<p class="sub"><span class="en">Scan the code to open this project page on any phone.</span><span class="ar">امسح الرمز لفتح صفحة المشروع على أي هاتف.</span></p>
+<div class="qrbox">
+<div id="qr" aria-label="QR code"></div>
+<div style="flex:1;min-width:240px">
+<p style="margin-top:0"><span class="en">The code points to the link below. Paste the final shared link of this page and press Update, then download the QR for the project label.</span><span class="ar">الرمز يشير إلى الرابط بالأسفل. الصق رابط الصفحة النهائي واضغط تحديث، ثم نزّل الـQR لوضعه على لوحة المشروع.</span></p>
+<input id="qrurl" type="url" aria-label="link">
+<p style="margin-bottom:0"><button id="qrup" type="button" class="fill"><span class="en">Update</span><span class="ar">تحديث</span></button>
+<button id="qrdl" type="button"><span class="en">Download PNG</span><span class="ar">تنزيل PNG</span></button></p>
+</div></div>
+</div></section>
+
+<footer><div class="wrap">Automated Color Sorting Conveyor · MEC 354 · Mechatronics Engineering</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+var root=document.documentElement,lb=document.getElementById('lang');
+function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';lb.textContent=l==='ar'?'English':'العربية';}
+setLang((navigator.language||'').toLowerCase().indexOf('ar')===0?'ar':'en');
+lb.onclick=function(){setLang(root.lang==='ar'?'en':'ar');};
+if(location.protocol.indexOf('http')===0){var vb=document.getElementById('vbox');var fr=document.createElement('iframe');fr.src='https://www.youtube-nocookie.com/embed/U7IXsHqCuUI?rel=0';fr.title='Demo video';fr.style.cssText='width:100%;height:100%;border:0';fr.allow='accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture';fr.allowFullscreen=true;vb.innerHTML='';vb.appendChild(fr);}
+var qr=document.getElementById('qr'),inp=document.getElementById('qrurl');
+var href=location.protocol.indexOf('http')===0?location.href.split('#')[0]:'';
+inp.value=href;
+function mk(){qr.innerHTML='';if(typeof QRCode==='undefined'||!inp.value)return;
+try{new QRCode(qr,{text:inp.value,width:220,height:220,colorDark:'#07142b',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});qr.removeAttribute('title');}catch(e){}}
+mk();
+document.getElementById('qrup').onclick=mk;
+document.getElementById('qrdl').onclick=function(){var c=qr.querySelector('canvas');if(!c)return;
+var a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='project-qr.png';document.body.appendChild(a);a.click();a.remove();};
+})();
+</script>
+</body>
+</html>
